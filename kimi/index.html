@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAIN Produções | Audiovisual</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        gain: {
+                            dark: '#0a0a0a',
+                            gray: '#1a1a1a',
+                            accent: '#ff6b35',
+                            light: '#f5f5f5'
+                        }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #f5f5f5;
+        }
+        
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        .video-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .video-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .video-card:hover .video-overlay {
+            opacity: 1;
+        }
+        
+        .video-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .service-card {
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .service-card:hover {
+            border-color: rgba(255, 107, 53, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(255, 107, 53, 0.2);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #ff6b35;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .hero-gradient {
+            background: radial-gradient(ellipse at center, rgba(255,107,53,0.15) 0%, transparent 70%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Grain Overlay -->
+    <div class="grain-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 bg-gain-dark/80 backdrop-blur-md border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-300">
+                        <span class="text-gain-dark font-bold text-lg font-display">G</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-display font-bold text-xl tracking-tight text-white">GAIN</span>
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400">Produções</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#servicos" class="nav-link text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors">Serviços</a>
+                    <a href="#portfolio" class="nav-link text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors">Portfólio</a>
+                    <a href="#sobre" class="nav-link text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors">Sobre</a>
+                    <a href="#contato" class="px-6 py-2.5 bg-white text-gain-dark text-sm font-semibold uppercase tracking-wider hover:bg-gain-accent hover:text-white transition-all duration-300 rounded-full">
+                        Contato
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white" onclick="toggleMenu()">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gain-gray border-t border-white/10">
+            <div class="px-6 py-4 space-y-4">
+                <a href="#servicos" class="block text-sm uppercase tracking-wider text-gray-300">Serviços</a>
+                <a href="#portfolio" class="block text-sm uppercase tracking-wider text-gray-300">Portfólio</a>
+                <a href="#sobre" class="block text-sm uppercase tracking-wider text-gray-300">Sobre</a>
+                <a href="#contato" class="block text-sm uppercase tracking-wider text-gain-accent">Contato</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div class="hero-gradient absolute inset-0 pointer-events-none"></div>
+        
+        <!-- Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-gain-accent/20 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center">
+            <div class="opacity-0 animate-fade-up" style="animation-delay: 0.2s;">
+                <p class="text-gain-accent text-sm uppercase tracking-[0.3em] mb-6 font-medium">Curitiba · PR · Brasil</p>
+                <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-8">
+                    Criação <span class="text-gradient italic font-light">audiovisual</span><br>
+                    de alto nível
+                </h1>
+                <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 leading-relaxed mb-12 font-light">
+                    A GAIN é um espaço de criação audiovisual especializado em produções que entregam qualidade cinematográfica — de gravações de estúdio a grandes eventos ao vivo.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#portfolio" class="px-8 py-4 bg-white text-gain-dark font-semibold uppercase tracking-wider hover:bg-gain-accent hover:text-white transition-all duration-300 rounded-full flex items-center justify-center gap-2 group">
+                        Ver Portfólio
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#contato" class="px-8 py-4 border border-white/20 text-white font-semibold uppercase tracking-wider hover:bg-white/10 transition-all duration-300 rounded-full">
+                        Fale Conosco
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-white/30"></i>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 border-y border-white/5 bg-gain-gray/30">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="opacity-0 animate-fade-up" style="animation-delay: 0.1s;">
+                    <div class="text-4xl md:text-5xl font-display font-bold text-white mb-2">500+</div>
+                    <div class="text-sm uppercase tracking-wider text-gray-500">Lives Produzidas</div>
+                </div>
+                <div class="opacity-0 animate-fade-up" style="animation-delay: 0.2s;">
+                    <div class="text-4xl md:text-5xl font-display font-bold text-white mb-2">10+</div>
+                    <div class="text-sm uppercase tracking-wider text-gray-500">Anos de Experiência</div>
+                </div>
+                <div class="opacity-0 animate-fade-up" style="animation-delay: 0.3s;">
+                    <div class="text-4xl md:text-5xl font-display font-bold text-white mb-2">100%</div>
+                    <div class="text-sm uppercase tracking-wider text-gray-500">Equipamento Próprio</div>
+                </div>
+                <div class="opacity-0 animate-fade-up" style="animation-delay: 0.4s;">
+                    <div class="text-4xl md:text-5xl font-display font-bold text-white mb-2">4K</div>
+                    <div class="text-sm uppercase tracking-wider text-gray-500">Qualidade de Captação</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicos" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="mb-16 opacity-0 animate-fade-up" id="servicos-title">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Nossos Serviços</h2>
+                <div class="w-20 h-1 bg-gain-accent"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Gravação -->
+                <div class="service-card bg-gain-gray/20 p-8 rounded-2xl opacity-0 animate-fade-up group cursor-pointer" style="animation-delay: 0.1s;">
+                    <div class="w-14 h-14 bg-gain-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-gain-accent/20 transition-colors">
+                        <i data-lucide="mic-2" class="w-7 h-7 text-gain-accent"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-3 text-white">Gravação</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Captação de qualquer tipo de áudio com equipamentos de estúdio profissional, garantindo a melhor qualidade sonora para seu projeto.
+                    </p>
+                </div>
+
+                <!-- Mixagem -->
+                <div class="service-card bg-gain-gray/20 p-8 rounded-2xl opacity-0 animate-fade-up group cursor-pointer" style="animation-delay: 0.2s;">
+                    <div class="w-14 h-14 bg-gain-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-gain-accent/20 transition-colors">
+                        <i data-lucide="sliders" class="w-7 h-7 text-gain-accent"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-3 text-white">Mixagem</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Mixamos seu trabalho em qualquer estilo, equilibrando cada elemento sonoro para uma escuta perfeita em qualquer ambiente.
+                    </p>
+                </div>
+
+                <!-- Masterização -->
+                <div class="service-card bg-gain-gray/20 p-8 rounded-2xl opacity-0 animate-fade-up group cursor-pointer" style="animation-delay: 0.3s;">
+                    <div class="w-14 h-14 bg-gain-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-gain-accent/20 transition-colors">
+                        <i data-lucide="disc" class="w-7 h-7 text-gain-accent"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-3 text-white">Masterização</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Finalizamos seu trabalho com a sonoridade ideal para reprodução em qualquer plataforma — streaming, rádio ou ao vivo.
+                    </p>
+                </div>
+
+                <!-- Filmagem -->
+                <div class="service-card bg-gain-gray/20 p-8 rounded-2xl opacity-0 animate-fade-up group cursor-pointer" style="animation-delay: 0.4s;">
+                    <div class="w-14 h-14 bg-gain-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-gain-accent/20 transition-colors">
+                        <i data-lucide="video" class="w-7 h-7 text-gain-accent"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-3 text-white">Filmagem</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Captação e edição de vídeos institucionais, comerciais, videoclipes musicais e animações com qualidade cinematográfica.
+                    </p>
+                </div>
+
+                <!-- Lives -->
+                <div class="service-card bg-gain-gray/20 p-8 rounded-2xl md:col-span-2 lg:col-span-2 opacity-0 animate-fade-up group cursor-pointer relative overflow-hidden" style="animation-delay: 0.5s;">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-gain-accent/5 rounded-full blur-3xl -mr-20 -mt-20"></div>
+                    <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-6">
+                        <div class="w-14 h-14 bg-gain-accent/10 rounded-xl flex items-center justify-center group-hover:bg-gain-accent/20 transition-colors shrink-0">
+                            <i data-lucide="radio" class="w-7 h-7 text-gain-accent"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <h3 class="font-display text-2xl font-bold text-white">Lives</h3>
+                                <span class="px-3 py-1 bg-gain-accent/20 text-gain-accent text-xs uppercase tracking-wider rounded-full font-semibold">Especialidade</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed text-sm max-w-xl">
+                                Transmissões ao vivo de qualquer porte. Mais de 500 lives produzidas com equipamentos de alta performance e equipe técnica dedicada.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-32 bg-gain-gray/20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 opacity-0 animate-fade-up" id="portfolio-title">
+                <div>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Portfólio</h2>
+                    <div class="w-20 h-1 bg-gain-accent mb-4"></div>
+                    <p class="text-gray-400">Produções selecionadas que demonstram nossa versatilidade</p>
+                </div>
+                
+                <!-- Filter Buttons -->
+                <div class="flex gap-2 mt-6 md:mt-0 overflow-x-auto pb-2 md:pb-0">
+                    <button onclick="filterPortfolio('all')" class="filter-btn active px-4 py-2 text-sm uppercase tracking-wider rounded-full border border-gain-accent bg-gain-accent text-white transition-all" data-filter="all">Todos</button>
+                    <button onclick="filterPortfolio('videoclipe')" class="filter-btn px-4 py-2 text-sm uppercase tracking-wider rounded-full border border-white/20 text-gray-400 hover:border-white/50 hover:text-white transition-all" data-filter="videoclipe">Videoclipes</button>
+                    <button onclick="filterPortfolio('live')" class="filter-btn px-4 py-2 text-sm uppercase tracking-wider rounded-full border border-white/20 text-gray-400 hover:border-white/50 hover:text-white transition-all" data-filter="live">Lives</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
+                <!-- João Vitor Drums -->
+                <div class="video-card group relative rounded-xl overflow-hidden bg-gain-gray aspect-video cursor-pointer" data-category="videoclipe" onclick="openVideo('João Vitor Drums - Treasure', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="João Vitor Drums" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="video-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gain-accent text-xs uppercase tracking-wider mb-2">Videoclipe · 2018</span>
+                        <h3 class="font-display text-xl font-bold text-white">João Vitor Drums</h3>
+                        <p class="text-gray-300 text-sm mt-1">Treasure — Bruno Mars (Drum Cover)</p>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                            <i data-lucide="play" class="w-6 h-6 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Da Ralé -->
+                <div class="video-card group relative rounded-xl overflow-hidden bg-gain-gray aspect-video cursor-pointer" data-category="videoclipe" onclick="openVideo('Da Ralé - Dani California', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Da Ralé" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="video-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gain-accent text-xs uppercase tracking-wider mb-2">Videoclipe · 2018</span>
+                        <h3 class="font-display text-xl font-bold text-white">Da Ralé</h3>
+                        <p class="text-gray-300 text-sm mt-1">Dani California — Red Hot Chili Peppers (Cover)</p>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                            <i data-lucide="play" class="w-6 h-6 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projeto Toca Aquela -->
+                <div class="video-card group relative rounded-xl overflow-hidden bg-gain-gray aspect-video cursor-pointer" data-category="videoclipe" onclick="openVideo('Projeto Toca Aquela - Signo de ar', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Projeto Toca Aquela" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="video-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gain-accent text-xs uppercase tracking-wider mb-2">Videoclipe · 2018</span>
+                        <h3 class="font-display text-xl font-bold text-white">Projeto Toca Aquela</h3>
+                        <p class="text-gray-300 text-sm mt-1">Signo de ar — Jorge Vercilo (Cover)</p>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                            <i data-lucide="play" class="w-6 h-6 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grupo TeBeTê -->
+                <div class="video-card group relative rounded-xl overflow-hidden bg-gain-gray aspect-video cursor-pointer" data-category="videoclipe" onclick="openVideo('Grupo TeBeTê', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Grupo TeBeTê" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="video-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gain-accent text-xs uppercase tracking-wider mb-2">Videoclipe · 2022</span>
+                        <h3 class="font-display text-xl font-bold text-white">Grupo TeBeTê</h3>
+                        <p class="text-gray-300 text-sm mt-1">Alucinado / Desse jeito é ruim pra mim</p>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                            <i data-lucide="play" class="w-6 h-6 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kelvin Pscheidt -->
+                <div class="video-card group relative rounded-xl overflow-hidden bg-gain-gray aspect-video cursor-pointer" data-category="videoclipe" onclick="openVideo('Kelvin Pscheidt - Like a stone', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Kelvin Pscheidt" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="video-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gain-accent text-xs uppercase tracking-wider mb-2">Videoclipe · 2018</span>
+                        <h3 class="font-display text-xl font-bold text-white">Kelvin Pscheidt</h3>
+                        <p class="text-gray-300 text-sm mt-1">Like a stone — Audioslave (Cover)</p>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                            <i data-lucide="play" class="w-6 h-6 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legião Urbana Cover -->
+                <div class="video-card group relative rounded-xl overflow-hidden bg-gain-gray aspect-video cursor-pointer" data-category="live" onclick="openVideo('Legião Urbana Cover - Ao Vivo', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Legião Urbana Cover" class="w-full h-full object-cover transition-transform duration-700">
+                    <div class="absolute top-4 right-4 px-3 py-1 bg-red-600 text-white text-xs uppercase tracking-wider rounded-full font-bold flex items-center gap-1">
+                        <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                        Live
+                    </div>
+                    <div class="video-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-gain-accent text-xs uppercase tracking-wider mb-2">Live · 2020</span>
+                        <h3 class="font-display text-xl font-bold text-white">Legião Urbana Cover</h3>
+                        <p class="text-gray-300 text-sm mt-1">Ao Vivo no Bar Doce Lar</p>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                            <i data-lucide="play" class="w-6 h-6 text-white fill-white ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <button class="px-8 py-3 border border-white/20 text-white uppercase tracking-wider text-sm hover:bg-white hover:text-gain-dark transition-all duration-300 rounded-full">
+                    Ver Mais Projetos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gain-accent/5 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="opacity-0 animate-fade-up" id="sobre-content">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Sobre a GAIN</h2>
+                    <div class="w-20 h-1 bg-gain-accent mb-8"></div>
+                    <div class="space-y-6 text-gray-300 leading-relaxed">
+                        <p>
+                            Somos um estúdio de produção audiovisual completo, localizado em Curitiba/PR, com infraestrutura própria e equipe especializada em captar a essência de cada projeto.
+                        </p>
+                        <p>
+                            Desde videoclipes musicais até transmissões ao vivo de grande porte, nossa missão é entregar conteúdo com qualidade técnica impecável e sensibilidade artística.
+                        </p>
+                        <p>
+                            Com mais de 500 lives produzidas e dezenas de projetos musicais gravados, desenvolvemos um workflow eficiente que garante entregas no prazo sem comprometer a criatividade.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-8 flex gap-4">
+                        <div class="flex items-center gap-2 text-gray-400">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-gain-accent"></i>
+                            <span class="text-sm">Equipamento de ponta</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-400">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-gain-accent"></i>
+                            <span class="text-sm">Equipe técnica dedicada</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative opacity-0 animate-fade-up" style="animation-delay: 0.2s;">
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-gain-gray relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-gain-accent/20 to-purple-500/20"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-gain-accent/20">
+                                    <span class="text-gain-dark font-bold text-5xl font-display">G</span>
+                                </div>
+                                <p class="text-gray-400 uppercase tracking-[0.3em] text-sm">Estúdio desde 2014</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative Elements -->
+                    <div class="absolute -top-4 -right-4 w-24 h-24 border border-gain-accent/30 rounded-full"></div>
+                    <div class="absolute -bottom-4 -left-4 w-32 h-32 border border-white/10 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contato" class="py-32 bg-gain-gray/30 border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center opacity-0 animate-fade-up" id="contato-content">
+            <h2 class="font-display text-4xl md:text-6xl font-bold mb-6">Vamos criar algo<br><span class="text-gradient">extraordinário</span> juntos?</h2>
+            <p class="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
+                Entre em contato para discutirmos seu próximo projeto. Estamos prontos para transformar sua visão em realidade audiovisual.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="mailto:contato@gainproducoes.com.br" class="px-8 py-4 bg-gain-accent text-white font-semibold uppercase tracking-wider hover:bg-orange-600 transition-all duration-300 rounded-full flex items-center justify-center gap-2">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    Enviar Email
+                </a>
+                <a href="https://wa.me/5541999999999" class="px-8 py-4 border border-white/20 text-white font-semibold uppercase tracking-wider hover:bg-white/10 transition-all duration-300 rounded-full flex items-center justify-center gap-2">
+                    <i data-lucide="phone" class="w-5 h-5"></i>
+                    WhatsApp
+                </a>
+            </div>
+
+            <div class="flex justify-center gap-6 text-gray-500">
+                <a href="#" class="hover:text-gain-accent transition-colors">
+                    <i data-lucide="instagram" class="w-6 h-6"></i>
+                </a>
+                <a href="#" class="hover:text-gain-accent transition-colors">
+                    <i data-lucide="youtube" class="w-6 h-6"></i>
+                </a>
+                <a href="#" class="hover:text-gain-accent transition-colors">
+                    <i data-lucide="facebook" class="w-6 h-6"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 bg-gain-dark">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <span class="text-gain-dark font-bold text-sm font-display">G</span>
+                </div>
+                <span class="text-gray-500 text-sm">© 2024 GAIN Produções. Todos os direitos reservados.</span>
+            </div>
+            <div class="text-gray-600 text-sm">
+                Curitiba · PR · Brasil
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="relative w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl">
+            <button onclick="closeVideo()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors">
+                <i data-lucide="x" class="w-6 h-6 text-white"></i>
+            </button>
+            <div id="video-container" class="w-full h-full flex items-center justify-center text-white">
+                <p class="text-gray-400">Player de vídeo seria carregado aqui</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Portfolio filter
+        function filterPortfolio(category) {
+            const cards = document.querySelectorAll('.video-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update buttons
+            buttons.forEach(btn => {
+                if (btn.dataset.filter === category) {
+                    btn.classList.add('bg-gain-accent', 'text-white', 'border-gain-accent');
+                    btn.classList.remove('text-gray-400', 'border-white/20');
+                } else {
+                    btn.classList.remove('bg-gain-accent', 'text-white', 'border-gain-accent');
+                    btn.classList.add('text-gray-400', 'border-white/20');
+                }
+            });
+            
+            // Filter cards with animation
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+
+        // Video modal
+        function openVideo(title, url) {
+            const modal = document.getElementById('video-modal');
+            const container = document.getElementById('video-container');
+            modal.classList.remove('hidden');
+            container.innerHTML = `
+                <div class="text-center">
+                    <h3 class="text-2xl font-display font-bold mb-4">${title}</h3>
+                    <p class="text-gray-400 mb-4">URL: ${url}</p>
+                    <p class="text-sm text-gray-500">(Integração com player de vídeo aqui)</p>
+                </div>
+            `;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('video-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on outside click
+        document.getElementById('video-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeVideo();
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements
+        document.querySelectorAll('.opacity-0').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+            observer.observe(el);
+        });
+
+        // Navbar scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('shadow-lg', 'bg-gain-dark/95');
+            } else {
+                navbar.classList.remove('shadow-lg', 'bg-gain-dark/80');
+            }
+            
+            lastScroll = currentScroll;
+        });
+    </script>
+</body>
+</html>
