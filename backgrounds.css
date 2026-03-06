@@ -1,0 +1,71 @@
+/* =============================================
+   GAIN Produções — Backgrounds por Seção
+   Adicione no <head> do index.html:
+   <link rel="stylesheet" href="backgrounds.css">
+   ============================================= */
+
+/* ---------- HERO (#home) ---------- */
+#home {
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.70) 100%),
+    url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&q=80&auto=format&fit=crop') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-color: transparent !important;
+}
+
+/* ---------- SERVIÇOS (#service) ---------- */
+#service {
+  background-image:
+    linear-gradient(to bottom, rgba(10,10,15,0.82) 0%, rgba(10,10,15,0.88) 100%),
+    url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1920&q=80&auto=format&fit=crop') !important;
+  background-size: cover !important;
+  background-position: center top !important;
+  background-attachment: fixed !important;
+  background-color: transparent !important;
+}
+
+/* ---------- PORTFÓLIO (#portfolio) ---------- */
+#portfolio {
+  background-image:
+    linear-gradient(to bottom, rgba(8,8,12,0.80) 0%, rgba(8,8,12,0.85) 100%),
+    url('https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=1920&q=80&auto=format&fit=crop') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-color: transparent !important;
+}
+
+/* ---------- LIVES (#lives) ---------- */
+#lives {
+  background-image:
+    linear-gradient(to bottom, rgba(5,5,10,0.75) 0%, rgba(5,5,10,0.80) 100%),
+    url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1920&q=80&auto=format&fit=crop') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-color: transparent !important;
+}
+
+/* ---------- SOBRE (#about) ---------- */
+#about {
+  background-image:
+    linear-gradient(to bottom, rgba(10,10,15,0.80) 0%, rgba(10,10,15,0.88) 100%),
+    url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1920&q=80&auto=format&fit=crop') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-color: transparent !important;
+}
+
+/* ---------- CONTATO (#contact) ---------- */
+#contact {
+  background-image:
+    linear-gradient(to bottom, rgba(5,5,10,0.78) 0%, rgba(5,5,10,0.85) 100%),
+    url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=1920&q=80&auto=format&fit=crop') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-color: transparent !important;
+}
